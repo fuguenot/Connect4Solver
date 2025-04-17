@@ -25,10 +25,12 @@ public class Position {
     }
 
     public Position(String[][] grid, String curr) {
+        moves = 0;
         for (int j = 0; j < WIDTH; j++) {
             for (int i = 0; i < HEIGHT; i++) {
-                mask |= (grid[HEIGHT - i - 1][j] == null ? 0L : 1L) << (j * HEIGHT + 1 + i);
-                pos |= (grid[HEIGHT - i - 1][j] != null && grid[HEIGHT - i - 1][j].equals(curr) ? 1L : 0L) << (j * HEIGHT + 1 + i);
+                mask |= (grid[i][j] == null ? 0L : 1L) << (j * (HEIGHT + 1) + (HEIGHT - i - 1));
+                pos |= (grid[i][j] != null && grid[i][j].equals(curr) ? 1L : 0L) << (j * (HEIGHT + 1) + (HEIGHT - i - 1));
+                if (grid[i][j] != null) moves++;
             }
         }
     }

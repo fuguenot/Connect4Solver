@@ -32,7 +32,7 @@ public class Main {
             if (med <= 0 && min / 2 < med) med = (short) (min / 2);
             else if (med >= 0 && max / 2 > med) med = (short) (max / 2);
             // null window search for better/worse score to narrow min/max
-            Move move = Game.negamax(pos, med, (short) (med + 1));
+            Move move = Game.negamax(pos, med, (short) (med + 1), (short) -1);
             // adjust window
             if (move.getScore() <= med) max = move.getScore();
             else {
@@ -55,6 +55,11 @@ public class Main {
                 pos.play(Integer.parseInt(String.valueOf(c)) - 1);
             long start = System.nanoTime();
             Move move = solve(pos);
+            if (move.getCol() == -1) {
+                System.out.println("AAAAAAAAAAA");
+                System.out.println(moves + ": " + move.getScore());
+                break;
+            }
             long end = System.nanoTime();
             if (move.getScore() != score) {
                 System.out.println("NO!!!!!!!!");
