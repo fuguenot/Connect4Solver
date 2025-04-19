@@ -2,22 +2,20 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
-    public static int nodes = 0;
-
     private static float avg(List<Long> times) {
         return times.stream().reduce(0L, Long::sum) / 1000f / 1000000000f;
     }
 
     private static float min(List<Long> times) {
+        assert !times.isEmpty();
         return times.stream().min(Long::compare).get() / 1000000000f;
     }
 
     private static float max(List<Long> times) {
+        assert !times.isEmpty();
         return times.stream().max(Long::compare).get() / 1000000000f;
     }
 
@@ -58,9 +56,9 @@ public class Main {
                 Position pos = new Position();
                 String[] line = l.split(" ");
                 String moves = line[0];
-                int score = Integer.parseInt(line[1]);
+                short score = Short.parseShort(line[1]);
                 for (char c : moves.toCharArray())
-                    pos.play(Integer.parseInt(String.valueOf(c)) - 1);
+                    pos.play(Short.parseShort(String.valueOf(c)) - 1);
                 long start = System.nanoTime();
                 Move move = solve(pos);
                 if (move.getCol() == -1) {
@@ -84,7 +82,17 @@ public class Main {
         }
     }
 
+    private static void testString(String s) {
+        Position pos = new Position();
+        for (char c : s.toCharArray())
+            pos.play(Short.parseShort(String.valueOf(c)) - 1);
+        long start = System.nanoTime();
+        Move move = solve(pos);
+        long end = System.nanoTime();
+        System.out.println("Score: " + move.getScore() + ", col: " + move.getCol() + " :: " + (end - start) / 1_000_000_000f + "s");
+    }
+
     public static void main(String[] args) throws IOException {
-        testSet("Test_L3_R1");
+        testString("44536");
     }
 }
