@@ -24,6 +24,12 @@ public class Position {
         this.moves = moves;
     }
 
+    public Position() {
+        pos = 0;
+        mask = 0;
+        moves = 0;
+    }
+
     public Position(String[][] grid, String curr) {
         moves = 0;
         for (int j = 0; j < WIDTH; j++) {

@@ -1,19 +1,24 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static int nodes = 0;
 
-    private static float avg(long[] times) {
-        return Arrays.stream(times).sum() / 1000f / 1000000000f;
+    private static float avg(List<Long> times) {
+        return times.stream().reduce(0L, Long::sum) / 1000f / 1000000000f;
     }
 
-    private static float min(long[] times) {
-        return Arrays.stream(times).min().getAsLong() / 1000000000f;
+    private static float min(List<Long> times) {
+        return times.stream().min(Long::compare).get() / 1000000000f;
     }
 
-    private static float max(long[] times) {
-        return Arrays.stream(times).max().getAsLong() / 1000000000f;
+    private static float max(List<Long> times) {
+        return times.stream().max(Long::compare).get() / 1000000000f;
     }
 
     private static Move solve(Position pos) {
@@ -43,34 +48,43 @@ public class Main {
         return minMove;
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        long[] times = new long[1000];
-        for (int i = 0; i < 1000; i++) {
-            Position pos = new Position(0, 0, (short) 0);
-            String[] line = sc.nextLine().split(" ");
-            String moves = line[0];
-            int score = Integer.parseInt(line[1]);
-            for (char c : moves.toCharArray())
-                pos.play(Integer.parseInt(String.valueOf(c)) - 1);
-            long start = System.nanoTime();
-            Move move = solve(pos);
-            if (move.getCol() == -1) {
-                System.out.println("AAAAAAAAAAA");
-                System.out.println(moves + ": " + move.getScore());
-                break;
+    private static void testSet(String name) throws IOException {
+        List<Long> times = new ArrayList<>();
+        int i = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(name))) {
+            String l;
+            while ((l = br.readLine()) != null) {
+                if (l.isEmpty()) break;
+                Position pos = new Position();
+                String[] line = l.split(" ");
+                String moves = line[0];
+                int score = Integer.parseInt(line[1]);
+                for (char c : moves.toCharArray())
+                    pos.play(Integer.parseInt(String.valueOf(c)) - 1);
+                long start = System.nanoTime();
+                Move move = solve(pos);
+                if (move.getCol() == -1) {
+                    System.out.println("AAAAAAAAAAA");
+                    System.out.println(moves + ": " + move.getScore());
+                    break;
+                }
+                long end = System.nanoTime();
+                if (move.getScore() != score) {
+                    System.out.println("NO!!!!!!!!");
+                    System.out.println(moves + ": " + move.getScore() + " (expected: " + score + ")");
+                    break;
+                }
+                System.out.println((i + 1) + " :: " + moves + ", score: " + move.getScore() + " :: " + (end - start) / 1_000_000_000.0 + " s");
+                times.add(end - start);
+                i++;
             }
-            long end = System.nanoTime();
-            if (move.getScore() != score) {
-                System.out.println("NO!!!!!!!!");
-                System.out.println(moves + ": " + move.getScore() + " (expected: " + score + ")");
-                break;
-            }
-            System.out.println((i + 1) + " :: " + moves + ", score: " + move.getScore() + " :: " + (end - start) / 1_000_000_000.0 + " s");
-            times[i] = end - start;
-//            System.out.println(move.getCol() + " (took " + (end - start) + " ns)");
+
+            System.out.println();
+            System.out.println("Avg. time: " + avg(times) + "s, range: [" + min(times) + "s, " + max(times) + "s]");
         }
-        System.out.println();
-        System.out.println("Avg. time: " + avg(times) + "s, range: [" + min(times) + "s, " + max(times) + "s]");
+    }
+
+    public static void main(String[] args) throws IOException {
+        testSet("Test_L3_R1");
     }
 }

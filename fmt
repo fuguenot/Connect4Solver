@@ -1,3 +1,0 @@
-(binary)
-
-bitboard (49 bits) -> best col (binary 0b000-0b110) (total 52 bits/line)
