@@ -36,24 +36,27 @@ public class Main {
                     pos.play(Short.parseShort(String.valueOf(c)) - 1);
                 long start = System.nanoTime();
                 Game.Move move = game.solve(pos);
-                if (move.getCol() == -1) {
+                if (move.getCol() == -1 && move.getScore() != 0) {
                     System.out.println("AAAAAAAAAAA");
                     System.out.println(moves + ": " + move.getScore());
                     break;
                 }
+                // 6, 24
                 long end = System.nanoTime();
                 if (move.getScore() != score) {
                     System.out.println("NO!!!!!!!!");
                     System.out.println(moves + ": " + move.getScore() + " (expected: " + score + ")");
                     break;
                 }
-                System.out.println((i + 1) + " :: " + moves + ", score: " + move.getScore() + " :: " + (end - start) / 1_000_000_000.0 + " s");
+                System.out.println((i + 1) + " :: " + moves + ", score: " + move.getScore() + ", col: " + move.getCol() + " :: " + (end - start) / 1_000_000_000.0 + " s");
                 times.add(end - start);
                 i++;
             }
 
-            System.out.println();
-            System.out.println("Avg. time: " + avg(times) + "s, range: [" + min(times) + "s, " + max(times) + "s]");
+            if (!times.isEmpty()) {
+                System.out.println();
+                System.out.println("Avg. time: " + avg(times) + "s, range: [" + min(times) + "s, " + max(times) + "s]");
+            }
         }
     }
 
@@ -67,7 +70,12 @@ public class Main {
         System.out.println("Score: " + move.getScore() + ", col: " + move.getCol() + " :: " + (end - start) / 1_000_000_000f + "s");
     }
 
-    public static void main(String[] args) throws IOException {
-        testString("44536");
+    public static void main(String[] args) {
+//        try {
+//            testSet("Test_L3_R1");
+//        } catch (IOException e) {
+//            System.err.println("IO error");
+//        }
+        testString("335413424327172446337172625415575517");
     }
 }
