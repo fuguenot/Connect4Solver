@@ -41,7 +41,6 @@ public class Main {
                     System.out.println(moves + ": " + move.getScore());
                     break;
                 }
-                // 6, 24
                 long end = System.nanoTime();
                 if (move.getScore() != score) {
                     System.out.println("NO!!!!!!!!");
@@ -72,10 +71,10 @@ public class Main {
 
     public static void main(String[] args) {
 //        try {
-//            testSet("Test_L3_R1");
+//            testSet("Test_L1_R3");
 //        } catch (IOException e) {
 //            System.err.println("IO error");
 //        }
-        testString("335413424327172446337172625415575517");
+        testString("54554444242");
     }
 }

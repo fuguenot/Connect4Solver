@@ -244,7 +244,7 @@ public class Game {
             else min = move.getScore();
         }
         // negamax to find best move with correct a/b
-        return negamax(pos, min, max);
+        return negamax(pos, (short) (min - 1), (short) (max + 1));
     }
 
     private Move negamax(Position pos, short a, short b) {
