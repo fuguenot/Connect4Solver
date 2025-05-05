@@ -75,6 +75,6 @@ public class Main {
 //        } catch (IOException e) {
 //            System.err.println("IO error");
 //        }
-        testString("54554444242");
+        testString("2344144");
     }
 }

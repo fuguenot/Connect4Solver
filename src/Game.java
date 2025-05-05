@@ -284,6 +284,7 @@ public class Game {
                 sorter.add(pos.moveScore(move), COLUMN_ORDER[i]);
         }
 
+        short realC = 3;
         // iterate through all possible next moves, saving best move
         while (sorter.hasNext()) {
             c = sorter.getNext();
@@ -294,10 +295,13 @@ public class Game {
             // exit early if score is better than our window
             if (score >= b) return new Move(score, c);
             // optimize window to look for moves better than this
-            if (score > a) a = score;
+            if (score > a) {
+                a = score;
+                realC = c;
+            }
         }
 
-        table.put(pos.getKey(), a, c);
-        return new Move(a, c);
+        table.put(pos.getKey(), a, realC);
+        return new Move(a, realC);
     }
 }
